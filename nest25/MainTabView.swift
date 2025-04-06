@@ -17,11 +17,23 @@ struct MainTabView: View {
                 }
                 .tag(1)
             
+            PollingPlacesView()
+                .tabItem {
+                    Label("Polling", systemImage: "mappin.circle.fill")
+                }
+                .tag(2)
+            
             VotingInfoView()
                 .tabItem {
                     Label("Voting", systemImage: "info.circle.fill")
                 }
-                .tag(2)
+                .tag(3)
+            
+            VoiceMattersView()
+                .tabItem {
+                    Label("Voice Matters", systemImage: "person.3.fill")
+                }
+                .tag(4)
         }
         .accentColor(Color("PrimaryBlue"))
     }
@@ -32,4 +44,3 @@ struct MainTabView_Previews: PreviewProvider {
         MainTabView()
     }
 }
-

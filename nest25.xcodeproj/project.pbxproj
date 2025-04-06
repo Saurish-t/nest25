@@ -29,9 +29,22 @@
 		26E3EF552DA1DD120019EA11 /* nest25UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = nest25UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		20D3CC992DA233A6007A56A5 /* Exceptions for "nest25" folder in "nest25" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 26E3EF3A2DA1DD110019EA11 /* nest25 */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		26E3EF3D2DA1DD110019EA11 /* nest25 */ = {
+		20D3CC872DA228FB007A56A5 /* nest25 */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				20D3CC992DA233A6007A56A5 /* Exceptions for "nest25" folder in "nest25" target */,
+			);
 			path = nest25;
 			sourceTree = "<group>";
 		};
@@ -75,7 +88,7 @@
 		26E3EF322DA1DD110019EA11 = {
 			isa = PBXGroup;
 			children = (
-				26E3EF3D2DA1DD110019EA11 /* nest25 */,
+				20D3CC872DA228FB007A56A5 /* nest25 */,
 				26E3EF4E2DA1DD120019EA11 /* nest25Tests */,
 				26E3EF582DA1DD120019EA11 /* nest25UITests */,
 				26E3EF3C2DA1DD110019EA11 /* Products */,
@@ -108,7 +121,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				26E3EF3D2DA1DD110019EA11 /* nest25 */,
+				20D3CC872DA228FB007A56A5 /* nest25 */,
 			);
 			name = nest25;
 			packageProductDependencies = (
@@ -396,9 +409,12 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"nest25/Preview Content\"";
-				DEVELOPMENT_TEAM = H7F763QG7M;
+				DEVELOPMENT_TEAM = 2ZA2XT2MGG;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = nest25/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "lemme get ur location huzz";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -409,7 +425,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = saurish.nest25;
+				PRODUCT_BUNDLE_IDENTIFIER = gautam.nest25;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -425,9 +441,12 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"nest25/Preview Content\"";
-				DEVELOPMENT_TEAM = H7F763QG7M;
+				DEVELOPMENT_TEAM = 2ZA2XT2MGG;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = nest25/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "lemme get ur location huzz";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -438,7 +457,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = saurish.nest25;
+				PRODUCT_BUNDLE_IDENTIFIER = gautam.nest25;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
