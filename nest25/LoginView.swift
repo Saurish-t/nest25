@@ -21,7 +21,7 @@ struct LoginView: View {
                     .frame(width: 100, height: 100)
                     .foregroundColor(Color("PrimaryBlue"))
                 
-                Text("ConnecterElector")
+                Text("ElectConnect")
                     .font(.largeTitle)
                     .fontWeight(.bold)
                     .foregroundColor(Color("PrimaryBlue"))
@@ -53,7 +53,6 @@ struct LoginView: View {
                 .padding(.horizontal, 30)
                 
                 Button(action: {
-                    // Handle forgot password
                     showingAlert = true
                     alertMessage = "Password reset functionality would be implemented here."
                 }) {
@@ -69,7 +68,6 @@ struct LoginView: View {
                         .foregroundColor(.secondary)
                     
                     Button(action: {
-                        // Handle sign up
                         showingAlert = true
                         alertMessage = "Sign up functionality would be implemented here."
                     }) {
@@ -88,8 +86,6 @@ struct LoginView: View {
     }
     
     private func login() {
-        // In a real app, you would validate credentials against a backend
-        // For this demo, we'll just check if fields are not empty
         if !email.isEmpty && !password.isEmpty {
             userEmail = email
             withAnimation {

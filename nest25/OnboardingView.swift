@@ -7,7 +7,7 @@ struct OnboardingView: View {
     
     private let pages = [
         OnboardingPage(
-            title: "Welcome to ConnecterElector",
+            title: "Welcome to ElectConnect",
             description: "Your platform for staying informed and engaged in the democratic process.",
             imageName: "person.3.fill",
             buttonText: "Next"
@@ -46,7 +46,6 @@ struct OnboardingView: View {
                 TabView(selection: $currentPage) {
                     ForEach(0..<pages.count, id: \.self) { index in
                         if index == pages.count - 1 {
-                            // Final page with quiz
                             QuizPage(selectedTopics: $selectedTopics, isOnboarded: $isOnboarded)
                                 .tag(index)
                         } else {
@@ -66,7 +65,6 @@ struct OnboardingView: View {
                             currentPage += 1
                         }
                     } else {
-                        // Action after the quiz is completed
                         withAnimation {
                             isOnboarded = true
                         }
@@ -83,11 +81,10 @@ struct OnboardingView: View {
                 .padding(.horizontal, 20)
                 .padding(.bottom, 30)
                 
-                // Skip Button: Takes you directly to the quiz page
                 if currentPage < pages.count - 1 {
                     Button(action: {
                         withAnimation {
-                            currentPage = pages.count - 1 // Skip directly to the quiz page
+                            currentPage = pages.count - 1
                         }
                     }) {
                         Text("Skip")
@@ -182,7 +179,7 @@ struct OnboardingPage: Identifiable {
     var title: String
     var description: String
     var imageName: String
-    var buttonText: String // Allow customization of button text for each page
+    var buttonText: String
 }
 
 struct OnboardingPageView: View {
