@@ -5,6 +5,9 @@ struct VotingInfoView: View {
     @AppStorage("userEmail") private var userEmail: String = ""
     @State private var showNotifications = false
     @State private var showingLogoutAlert = false
+    @State private var showPrivacy = false
+    @State private var showHelp = false
+    @State private var showAbout = false
 
     var body: some View {
         NavigationView {
@@ -53,16 +56,37 @@ struct VotingInfoView: View {
                             }
                             .hidden()
                         )
-                            .padding(.horizontal)
+                        .padding(.horizontal)
 
-                        SettingsRowView(title: "Privacy Settings", iconName: "lock.fill")
-                            .padding(.horizontal)
+                        Button {
+                            showPrivacy = true
+                        } label: {
+                            SettingsRowView(title: "Privacy Settings", iconName: "lock.fill")
+                        }
+                        .sheet(isPresented: $showPrivacy) {
+                            PrivacySettingsView()
+                        }
+                        .padding(.horizontal)
 
-                        SettingsRowView(title: "Help & Support", iconName: "questionmark.circle.fill")
-                            .padding(.horizontal)
+                        Button {
+                            showHelp = true
+                        } label: {
+                            SettingsRowView(title: "Help & Support", iconName: "questionmark.circle.fill")
+                        }
+                        .sheet(isPresented: $showHelp) {
+                            HelpSupportView()
+                        }
+                        .padding(.horizontal)
 
-                        SettingsRowView(title: "About ElectConnect", iconName: "info.circle.fill")
-                            .padding(.horizontal)
+                        Button {
+                            showAbout = true
+                        } label: {
+                            SettingsRowView(title: "About ElectConnect", iconName: "info.circle.fill")
+                        }
+                        .sheet(isPresented: $showAbout) {
+                            AboutElectConnectView()
+                        }
+                        .padding(.horizontal)
                     }
                 }
                 .padding(.vertical)
@@ -255,8 +279,6 @@ struct InfoCardView: View {
             ]
         }
     }
-
-
 }
 
 struct MoreInfoView: View {
@@ -307,6 +329,122 @@ struct MoreInfoView: View {
     }
 }
 
+struct PrivacySettingsView: View {
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 20) {
+                Text("Privacy Settings")
+                    .font(.title)
+                    .fontWeight(.bold)
+
+                Group {
+                    Text("Data Collection")
+                        .font(.headline)
+                    Text("We collect your email and login status to personalize your experience. No other personal data is stored on our servers.")
+                }
+
+                Group {
+                    Text("Your Control")
+                        .font(.headline)
+                    Text("You can delete your account or request data removal anytime through the Help & Support section.")
+                }
+
+                Group {
+                    Text("Secure Storage")
+                        .font(.headline)
+                    Text("All personal data is securely stored using industry-standard encryption and never shared with third parties.")
+                }
+
+                Group {
+                    Text("Usage Analytics")
+                        .font(.headline)
+                    Text("We anonymously track how the app is used to help us improve features and user experience.")
+                }
+
+                Spacer()
+            }
+            .padding()
+        }
+    }
+}
+
+struct HelpSupportView: View {
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 20) {
+                Text("Help & Support")
+                    .font(.title)
+                    .fontWeight(.bold)
+
+                Group {
+                    Text("FAQs")
+                        .font(.headline)
+                    Text("• How do I register to vote?\n• What if I forget my password?\n• Where can I find local election info?")
+                }
+
+                Group {
+                    Text("Contact Us")
+                        .font(.headline)
+                    Text("Email us at gautam.anamalai@gmail.com or message us through the app’s feedback form.")
+                }
+
+                Group {
+                    Text("App Feedback")
+                        .font(.headline)
+                    Text("We’d love to hear how we can improve. Use the feedback form in the app settings to submit suggestions.")
+                }
+
+                Group {
+                    Text("Troubleshooting")
+                        .font(.headline)
+                    Text("Try restarting the app or checking your internet connection if you encounter issues.")
+                }
+
+                Spacer()
+            }
+            .padding()
+        }
+    }
+}
+
+struct AboutElectConnectView: View {
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 20) {
+                Text("About ElectConnect")
+                    .font(.title)
+                    .fontWeight(.bold)
+
+                Group {
+                    Text("Our Mission")
+                        .font(.headline)
+                    Text("ElectConnect empowers citizens with accessible, nonpartisan election information to make informed choices and boost civic engagement.")
+                }
+
+                Group {
+                    Text("Built With Purpose")
+                        .font(.headline)
+                    Text("This app was designed to simplify complex voting laws and bring clarity to voter registration, eligibility, and deadlines.")
+                }
+
+                Group {
+                    Text("Version Info")
+                        .font(.headline)
+                    Text("ElectConnect v1.0.0\nSwiftUI • iOS")
+                }
+
+                Group {
+                    Text("Open Source")
+                        .font(.headline)
+                    Text("We believe in transparency. Parts of ElectConnect are open source and available for community contribution.")
+                }
+
+                Spacer()
+            }
+            .padding()
+        }
+    }
+}
 
 struct InfoSection: Identifiable {
     let id = UUID()
