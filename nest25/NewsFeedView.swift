@@ -23,15 +23,47 @@ struct NewsFeedView: View {
     }
     
     private func fetchArticles() {
-        guard let url = URL(string: "https://example.com/api/articles") else { return }
+        guard let url = URL(string: "http://192.168.137.161:5004/articles") else { return }
         
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            guard let data = data, error == nil else { return }
+        let requestBody: [String: Any] = [
+            "article_count": 10, // Example value, replace with actual data from quiz/poll
+            "topics": ["econ", "environ"] // Example topics, replace with actual data
+        ]
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = try? JSONSerialization.data(withJSONObject: requestBody, options: [])
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("Request error: \(error)")
+                return
+            }
+            
+            guard let data = data else {
+                print("No data received")
+                return
+            }
+            
+            // Log raw response for debugging
+            if let rawResponse = String(data: data, encoding: .utf8) {
+                print("Raw response: \(rawResponse)")
+            }
             
             do {
-                let decodedArticles = try JSONDecoder().decode([Article].self, from: data)
-                DispatchQueue.main.async {
-                    self.articles = decodedArticles
+                let serverResponse = try JSONDecoder().decode(ServerResponse.self, from: data)
+                if let errorMessage = serverResponse.error, errorMessage != "None" {
+                    print("Server error: \(errorMessage)")
+                    return
+                }
+                
+                // Decode the JSON-encoded string in the articles field
+                if let articlesData = serverResponse.articles.data(using: .utf8) {
+                    let decodedArticles = try JSONDecoder().decode([Article].self, from: articlesData)
+                    DispatchQueue.main.async {
+                        self.articles = decodedArticles
+                    }
                 }
             } catch {
                 print("Failed to decode JSON: \(error)")
@@ -40,8 +72,14 @@ struct NewsFeedView: View {
     }
 }
 
+// Define a struct for the server response
+struct ServerResponse: Decodable {
+    var error: String? // Error message, if any
+    var articles: String // JSON-encoded string of articles
+}
+
 struct Article: Identifiable, Decodable {
-    var id = UUID()
+    var id: URL { url } // Use the unique URL as the identifier
     var url: URL
     var title: String
     var bias: String
