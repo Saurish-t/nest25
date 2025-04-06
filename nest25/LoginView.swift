@@ -42,7 +42,7 @@ struct LoginView: View {
                 .padding(.horizontal, 30)
                 
                 Button(action: login) {
-                    Text("Login")
+                    Text("Login / Sign Up")
                         .font(.headline)
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)
@@ -51,32 +51,10 @@ struct LoginView: View {
                         .cornerRadius(12)
                 }
                 .padding(.horizontal, 30)
-                
-                Button(action: {
-                    showingAlert = true
-                    alertMessage = "Password reset functionality would be implemented here."
-                }) {
-                    Text("Forgot Password?")
-                        .font(.subheadline)
-                        .foregroundColor(Color("PrimaryBlue"))
-                }
+    
                 
                 Spacer()
                 
-                HStack {
-                    Text("Don't have an account?")
-                        .foregroundColor(.secondary)
-                    
-                    Button(action: {
-                        showingAlert = true
-                        alertMessage = "Sign up functionality would be implemented here."
-                    }) {
-                        Text("Sign Up")
-                            .fontWeight(.bold)
-                            .foregroundColor(Color("PrimaryBlue"))
-                    }
-                }
-                .padding(.bottom, 30)
             }
             .padding()
         }
