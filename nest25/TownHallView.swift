@@ -13,11 +13,40 @@ struct WebView: UIViewRepresentable {
         webView.load(request)
     }
 }
-import SwiftUI
 
 struct TownHallView: View {
+    @State private var transcribedText: String = "Listening..."
+    private let fetchInterval: TimeInterval = 5.0
+    private let serverURL = URL(string: "http://192.168.137.161:5020/text")! // Replace with your server endpoint
+
     var body: some View {
-        WebView(url: URL(string: "http://192.168.137.161:5010")!)
-            .edgesIgnoringSafeArea(.all)
+        VStack {
+            WebView(url: URL(string: "http://192.168.137.161:5010")!)
+                .edgesIgnoringSafeArea(.all)
+            Text(transcribedText)
+                .padding()
+                .background(Color.gray.opacity(0.2))
+                .cornerRadius(8)
+                .padding()
+        }
+        .onAppear(perform: startFetchingText)
+    }
+
+    private func startFetchingText() {
+        Timer.scheduledTimer(withTimeInterval: fetchInterval, repeats: true) { _ in
+            fetchTranscribedText()
+        }
+    }
+
+    private func fetchTranscribedText() {
+        let task = URLSession.shared.dataTask(with: serverURL) { data, _, error in
+            guard let data = data, error == nil else { return }
+            if let fetchedText = String(data: data, encoding: .utf8) {
+                DispatchQueue.main.async {
+                    transcribedText = fetchedText
+                }
+            }
+        }
+        task.resume()
     }
 }
