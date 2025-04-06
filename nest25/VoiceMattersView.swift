@@ -401,53 +401,6 @@ struct VoterTurnoutStatsView: View {
                 }
                 .padding(.horizontal)
                 
-                VStack(alignment: .leading, spacing: 15) {
-                    Text("What Drives Turnout?")
-                        .font(.title2)
-                        .fontWeight(.semibold)
-                    
-                    Text("Several factors influence voter turnout. Access to early voting and mail-in ballots significantly boosts participation—in 2020, 46% of voters used these methods, up from 21% in 2016. Conversely, restrictive laws like voter ID requirements can suppress turnout, particularly among low-income and minority voters.")
-                        .font(.body)
-                    
-                    Text("Education and outreach also matter. States with robust voter education programs, like Colorado, consistently see turnout above 70%. In contrast, states with limited resources for voter outreach, like Mississippi, often fall below 60%.")
-                        .font(.body)
-                    
-                    Text("Finally, the stakes of an election play a role. Presidential elections typically see higher turnout (66.8% in 2020) than midterms (50% in 2018), as voters perceive greater impact in national races. Local elections, despite their direct impact, often see turnout below 30%, highlighting a disconnect in civic engagement.")
-                        .font(.body)
-                }
-                .padding(.horizontal)
-                
-                VStack(alignment: .leading, spacing: 15) {
-                    Text("What Drives Turnout?")
-                        .font(.title2)
-                        .fontWeight(.semibold)
-                    
-                    Text("Several factors influence voter turnout. Access to early voting and mail-in ballots significantly boosts participation—in 2020, 46% of voters used these methods, up from 21% in 2016. Conversely, restrictive laws like voter ID requirements can suppress turnout, particularly among low-income and minority voters.")
-                        .font(.body)
-                    
-                    Text("Education and outreach also matter. States with robust voter education programs, like Colorado, consistently see turnout above 70%. In contrast, states with limited resources for voter outreach, like Mississippi, often fall below 60%.")
-                        .font(.body)
-                    
-                    Text("Finally, the stakes of an election play a role. Presidential elections typically see higher turnout (66.8% in 2020) than midterms (50% in 2018), as voters perceive greater impact in national races. Local elections, despite their direct impact, often see turnout below 30%, highlighting a disconnect in civic engagement.")
-                        .font(.body)
-                }
-                .padding(.horizontal)
-                
-                VStack(alignment: .leading, spacing: 15) {
-                    Text("What Drives Turnout?")
-                        .font(.title2)
-                        .fontWeight(.semibold)
-                    
-                    Text("Several factors influence voter turnout. Access to early voting and mail-in ballots significantly boosts participation—in 2020, 46% of voters used these methods, up from 21% in 2016. Conversely, restrictive laws like voter ID requirements can suppress turnout, particularly among low-income and minority voters.")
-                        .font(.body)
-                    
-                    Text("Education and outreach also matter. States with robust voter education programs, like Colorado, consistently see turnout above 70%. In contrast, states with limited resources for voter outreach, like Mississippi, often fall below 60%.")
-                        .font(.body)
-                    
-                    Text("Finally, the stakes of an election play a role. Presidential elections typically see higher turnout (66.8% in 2020) than midterms (50% in 2018), as voters perceive greater impact in national races. Local elections, despite their direct impact, often see turnout below 30%, highlighting a disconnect in civic engagement.")
-                        .font(.body)
-                }
-                .padding(.horizontal)
             }
         }
     }

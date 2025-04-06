@@ -13,7 +13,7 @@ struct SplashView: View {
                     .frame(width: 100, height: 100)
                     .foregroundColor(.white)
                 
-                Text("ConnecterElector")
+                Text("ElectConnect")
                     .font(.largeTitle)
                     .fontWeight(.bold)
                     .foregroundColor(.white)

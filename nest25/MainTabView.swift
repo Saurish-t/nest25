@@ -17,21 +17,21 @@ struct MainTabView: View {
                 }
                 .tag(1)
             
+            VoiceMattersView()
+                .tabItem {
+                    Label("Voice Matters", systemImage: "person.3.fill")
+                }
+                .tag(2)
+            
             PollingPlacesView()
                 .tabItem {
                     Label("Polling", systemImage: "mappin.circle.fill")
                 }
-                .tag(2)
+                .tag(3)
             
             VotingInfoView()
                 .tabItem {
                     Label("Voting", systemImage: "info.circle.fill")
-                }
-                .tag(3)
-            
-            VoiceMattersView()
-                .tabItem {
-                    Label("Voice Matters", systemImage: "person.3.fill")
                 }
                 .tag(4)
         }

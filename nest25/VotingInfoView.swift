@@ -3,6 +3,7 @@ import SwiftUI
 struct VotingInfoView: View {
     @AppStorage("isLoggedIn") private var isLoggedIn: Bool = true
     @AppStorage("userEmail") private var userEmail: String = ""
+    @State private var showNotifications = false
     @State private var showingLogoutAlert = false
 
     var body: some View {
@@ -41,7 +42,19 @@ struct VotingInfoView: View {
                             .fontWeight(.bold)
                             .padding(.horizontal)
 
-                        SettingsRowView(title: "Notification Preferences", iconName: "bell.fill")
+                        Button {
+                            showNotifications = true
+                        } label: {
+                            SettingsRowView(title: "Notification Preferences", iconName: "bell.fill")
+                        }
+                        .background(
+                            NavigationLink(destination: NotificationSettingsView()
+                                            .navigationBarTitle("Notifications", displayMode: .inline),
+                                           isActive: $showNotifications) {
+                                EmptyView()
+                            }
+                            .hidden()
+                        )
                             .padding(.horizontal)
 
                         SettingsRowView(title: "Privacy Settings", iconName: "lock.fill")

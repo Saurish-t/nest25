@@ -1,8 +1,8 @@
 import SwiftUI
 import MapKit
 import CoreLocation
+import EventKit
 
-// Location Manager to handle location services
 class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     private let locationManager = CLLocationManager()
     @Published var location: CLLocation?
@@ -14,8 +14,6 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.startUpdatingLocation()
-        
-        // Default location set to Tysons Corner, VA
         self.location = CLLocation(latitude: 38.9187, longitude: -77.2311)
     }
     
@@ -51,7 +49,7 @@ struct PollingPlace: Hashable, Identifiable {
     var title: String
     var type: PlaceType
     var address: String
-    var distance: Double? // in meters
+    var distance: Double?
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
@@ -112,84 +110,26 @@ struct PollingPlacesView: View {
     @State private var showLocationPermissionAlert = false
     @State private var selectedPlace: PollingPlace?
     @State private var showDetailsSheet = false
-    @State private var searchRadius: Double = 5000 // 5km default
+    @State private var searchRadius: Double = 5000
     
-    // Your exact location in decimal degrees
     let userLocation = CLLocationCoordinate2D(latitude: 38.911944, longitude: -77.2225)
     
-    // Hardcoded polling places in Tysons Corner, VA
     let pollingPlacesTysons = [
-        PollingPlace(
-            coordinate: CLLocationCoordinate2D(latitude: 38.9187, longitude: -77.2311),
-            title: "Tysons Corner Center",
-            type: .other,
-            address: "1961 Chain Bridge Rd, Tysons, VA 22102",
-            distance: nil
-        ),
-        PollingPlace(
-            coordinate: CLLocationCoordinate2D(latitude: 38.9210, longitude: -77.2390),
-            title: "Westbriar Elementary School",
-            type: .school,
-            address: "1741 Pine Valley Dr, Vienna, VA 22182",
-            distance: nil
-        ),
-        PollingPlace(
-            coordinate: CLLocationCoordinate2D(latitude: 38.9145, longitude: -77.2215),
-            title: "Tysons-Pimmit Regional Library",
-            type: .library,
-            address: "7584 Leesburg Pike, Falls Church, VA 22043",
-            distance: nil
-        ),
-        PollingPlace(
-            coordinate: CLLocationCoordinate2D(latitude: 38.9250, longitude: -77.2350),
-            title: "First Baptist Church of Vienna",
-            type: .church,
-            address: "450 Orchard St NW, Vienna, VA 22180",
-            distance: nil
-        ),
-        PollingPlace(
-            coordinate: CLLocationCoordinate2D(latitude: 38.9100, longitude: -77.2400),
-            title: "McLean Community Center",
-            type: .communityCenter,
-            address: "1234 Ingleside Ave, McLean, VA 22101",
-            distance: nil
-        ),
-        PollingPlace(
-            coordinate: CLLocationCoordinate2D(latitude: 38.9300, longitude: -77.2250),
-            title: "Vienna Town Hall",
-            type: .governmentBuilding,
-            address: "127 Center St S, Vienna, VA 22180",
-            distance: nil
-        ),
-        PollingPlace(
-            coordinate: CLLocationCoordinate2D(latitude: 38.9050, longitude: -77.2300),
-            title: "McLean High School",
-            type: .school,
-            address: "1633 Davidson Rd, McLean, VA 22101",
-            distance: nil
-        ),
-        PollingPlace(
-            coordinate: CLLocationCoordinate2D(latitude: 38.9200, longitude: -77.2150),
-            title: "Patrick Henry Library",
-            type: .library,
-            address: "101 Maple Ave E, Vienna, VA 22180",
-            distance: nil
-        )
+        PollingPlace(coordinate: CLLocationCoordinate2D(latitude: 38.9187, longitude: -77.2311), title: "Tysons Corner Center", type: .other, address: "1961 Chain Bridge Rd, Tysons, VA 22102", distance: nil),
+        PollingPlace(coordinate: CLLocationCoordinate2D(latitude: 38.9210, longitude: -77.2390), title: "Westbriar Elementary School", type: .school, address: "1741 Pine Valley Dr, Vienna, VA 22182", distance: nil),
+        PollingPlace(coordinate: CLLocationCoordinate2D(latitude: 38.9145, longitude: -77.2215), title: "Tysons-Pimmit Regional Library", type: .library, address: "7584 Leesburg Pike, Falls Church, VA 22043", distance: nil),
+        PollingPlace(coordinate: CLLocationCoordinate2D(latitude: 38.9250, longitude: -77.2350), title: "First Baptist Church of Vienna", type: .church, address: "450 Orchard St NW, Vienna, VA 22180", distance: nil),
+        PollingPlace(coordinate: CLLocationCoordinate2D(latitude: 38.9100, longitude: -77.2400), title: "McLean Community Center", type: .communityCenter, address: "1234 Ingleside Ave, McLean, VA 22101", distance: nil),
+        PollingPlace(coordinate: CLLocationCoordinate2D(latitude: 38.9300, longitude: -77.2250), title: "Vienna Town Hall", type: .governmentBuilding, address: "127 Center St S, Vienna, VA 22180", distance: nil),
+        PollingPlace(coordinate: CLLocationCoordinate2D(latitude: 38.9050, longitude: -77.2300), title: "McLean High School", type: .school, address: "1633 Davidson Rd, McLean, VA 22101", distance: nil),
+        PollingPlace(coordinate: CLLocationCoordinate2D(latitude: 38.9200, longitude: -77.2150), title: "Patrick Henry Library", type: .library, address: "101 Maple Ave E, Vienna, VA 22180", distance: nil)
     ]
     
     var body: some View {
         NavigationView {
             ZStack {
-                // Map view
-                Map(
-                    position: $cameraPosition,
-                    interactionModes: .all,
-                    selection: $selectedPlace
-                ) {
-                    // Show user location
+                Map(position: $cameraPosition, interactionModes: .all, selection: $selectedPlace) {
                     UserAnnotation()
-                    
-                    // Show polling places
                     ForEach(pollingPlaces) { place in
                         Marker(place.title, coordinate: place.coordinate)
                             .tint(place.type.color)
@@ -198,21 +138,14 @@ struct PollingPlacesView: View {
                 .mapStyle(.standard)
                 .edgesIgnoringSafeArea(.top)
                 .onAppear {
-                    // Immediately load polling places with user's exact location
-                    cameraPosition = .region(MKCoordinateRegion(
-                        center: userLocation,
-                        span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
-                    ))
+                    cameraPosition = .region(MKCoordinateRegion(center: userLocation, span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)))
                     loadPollingPlaces(from: userLocation)
                     setupLocationManager()
                 }
                 .onChange(of: locationManager.location) { _, newLocation in
                     if let location = newLocation {
                         withAnimation {
-                            cameraPosition = .region(MKCoordinateRegion(
-                                center: location.coordinate,
-                                span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
-                            ))
+                            cameraPosition = .region(MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)))
                         }
                         if pollingPlaces.isEmpty {
                             loadPollingPlaces(from: userLocation)
@@ -220,25 +153,18 @@ struct PollingPlacesView: View {
                     }
                 }
                 
-                // Bottom Card with Polling Places List
                 VStack {
                     Spacer()
-                    
                     VStack(spacing: 0) {
-                        // Handle Bar
                         RoundedRectangle(cornerRadius: 3)
                             .frame(width: 40, height: 6)
                             .foregroundColor(.gray.opacity(0.3))
                             .padding(.top, 8)
-                        
-                        // Header
                         HStack {
                             Text("Tysons Corner Polling Places")
                                 .font(.headline)
                                 .fontWeight(.semibold)
-                            
                             Spacer()
-                            
                             Menu {
                                 Button("1 km") { searchRadius = 1000; refreshPollingPlaces() }
                                 Button("5 km") { searchRadius = 5000; refreshPollingPlaces() }
@@ -256,8 +182,6 @@ struct PollingPlacesView: View {
                         }
                         .padding(.horizontal)
                         .padding(.top, 8)
-                        
-                        // Polling Places List
                         if pollingPlaces.isEmpty {
                             Text("No polling places found nearby. Try increasing your search radius.")
                                 .foregroundColor(.gray)
@@ -268,31 +192,23 @@ struct PollingPlacesView: View {
                                 ForEach(pollingPlaces.sorted { ($0.distance ?? 0) < ($1.distance ?? 0) }) { place in
                                     Button(action: {
                                         selectedPlace = place
-                                        // Center map on selected place
                                         withAnimation {
-                                            cameraPosition = .region(MKCoordinateRegion(
-                                                center: place.coordinate,
-                                                span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
-                                            ))
+                                            cameraPosition = .region(MKCoordinateRegion(center: place.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)))
                                         }
                                     }) {
                                         HStack {
                                             Image(systemName: place.type.iconName)
                                                 .foregroundColor(place.type.color)
                                                 .frame(width: 30)
-                                            
                                             VStack(alignment: .leading) {
                                                 Text(place.title)
                                                     .font(.system(size: 16))
                                                     .fontWeight(.medium)
-                                                
                                                 Text(place.address)
                                                     .font(.caption)
                                                     .foregroundColor(.gray)
                                             }
-                                            
                                             Spacer()
-                                            
                                             if let distance = place.distance {
                                                 Text(formatDistance(distance))
                                                     .font(.caption)
@@ -317,13 +233,10 @@ struct PollingPlacesView: View {
                     .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: -3)
                 }
                 
-                // Control Buttons
                 VStack {
                     HStack {
                         Spacer()
-                        
                         VStack(spacing: 12) {
-                            // Globe Button to zoom out and show all locations
                             Button(action: {
                                 withAnimation(.easeInOut(duration: 0.5)) {
                                     if !pollingPlaces.isEmpty {
@@ -340,14 +253,9 @@ struct PollingPlacesView: View {
                                     .clipShape(Circle())
                                     .shadow(color: Color.black.opacity(0.2), radius: 4, x: 0, y: 2)
                             }
-                            
-                            // Recenter Button - Navigates to your exact location
                             Button(action: {
                                 withAnimation {
-                                    cameraPosition = .region(MKCoordinateRegion(
-                                        center: userLocation,
-                                        span: MKCoordinateSpan(latitudeDelta: 0.015, longitudeDelta: 0.015)
-                                    ))
+                                    cameraPosition = .region(MKCoordinateRegion(center: userLocation, span: MKCoordinateSpan(latitudeDelta: 0.015, longitudeDelta: 0.015)))
                                 }
                             }) {
                                 Image(systemName: "location.circle.fill")
@@ -360,7 +268,6 @@ struct PollingPlacesView: View {
                         }
                         .padding()
                     }
-                    
                     Spacer()
                 }
             }
@@ -414,27 +321,18 @@ struct PollingPlacesView: View {
     }
     
     func refreshPollingPlaces() {
-        // Always use the user's exact location for refreshing
         loadPollingPlaces(from: userLocation)
     }
     
     func loadPollingPlaces(from userLocation: CLLocationCoordinate2D) {
-        // Use our hardcoded polling places
         var filteredPlaces = pollingPlacesTysons
-        
-        // Update distances based on the provided user location
         for i in 0..<filteredPlaces.count {
             let placeCoordinate = filteredPlaces[i].coordinate
             let locationDistance = CLLocation(latitude: userLocation.latitude, longitude: userLocation.longitude)
                 .distance(from: CLLocation(latitude: placeCoordinate.latitude, longitude: placeCoordinate.longitude))
-            
             filteredPlaces[i].distance = locationDistance
         }
-        
-        // Filter by search radius
         filteredPlaces = filteredPlaces.filter { ($0.distance ?? 0) <= searchRadius }
-        
-        // Set the polling places
         pollingPlaces = filteredPlaces
     }
     
@@ -453,7 +351,6 @@ struct PollingPlacesView: View {
         }
     }
     
-    // Function to calculate a region that fits all coordinates
     func regionThatFitsCoordinates(_ coordinates: [CLLocationCoordinate2D]) -> MKCoordinateRegion {
         var minLat: CLLocationDegrees = 90.0
         var maxLat: CLLocationDegrees = -90.0
@@ -467,14 +364,8 @@ struct PollingPlacesView: View {
             maxLon = max(maxLon, coordinate.longitude)
         }
         
-        let center = CLLocationCoordinate2D(
-            latitude: (minLat + maxLat) / 2,
-            longitude: (minLon + maxLon) / 2
-        )
-        let span = MKCoordinateSpan(
-            latitudeDelta: (maxLat - minLat) * 1.3, // Add 30% padding
-            longitudeDelta: (maxLon - minLon) * 1.3
-        )
+        let center = CLLocationCoordinate2D(latitude: (minLat + maxLat) / 2, longitude: (minLon + maxLon) / 2)
+        let span = MKCoordinateSpan(latitudeDelta: (maxLat - minLat) * 1.3, longitudeDelta: (maxLon - minLon) * 1.3)
         return MKCoordinateRegion(center: center, span: span)
     }
 }
@@ -482,23 +373,24 @@ struct PollingPlacesView: View {
 struct PollingPlaceDetailView: View {
     let place: PollingPlace
     @State private var showDirections = false
+    @State private var showCalendarAlert = false
+    @State private var calendarAlertMessage = ""
     @Environment(\.dismiss) private var dismiss
+    
+    private let eventStore = EKEventStore()
     
     var body: some View {
         NavigationView {
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
-                    // Header with type icon
                     HStack {
                         Image(systemName: place.type.iconName)
                             .font(.largeTitle)
                             .foregroundColor(place.type.color)
-                        
                         VStack(alignment: .leading) {
                             Text(place.title)
                                 .font(.title)
                                 .fontWeight(.bold)
-                            
                             Text(place.type.rawValue)
                                 .font(.subheadline)
                                 .foregroundColor(.gray)
@@ -506,21 +398,17 @@ struct PollingPlaceDetailView: View {
                     }
                     .padding(.vertical)
                     
-                    // Address
                     VStack(alignment: .leading) {
                         Text("Address")
                             .font(.headline)
-                        
                         Text(place.address)
                             .font(.body)
                     }
                     
-                    // Distance
                     if let distance = place.distance {
                         VStack(alignment: .leading) {
                             Text("Distance")
                                 .font(.headline)
-                            
                             HStack {
                                 Image(systemName: "location.fill")
                                     .foregroundColor(.blue)
@@ -529,46 +417,37 @@ struct PollingPlaceDetailView: View {
                         }
                     }
                     
-                    // Hours - Virginia polls are open 6am-7pm
                     VStack(alignment: .leading) {
                         Text("Voting Hours")
                             .font(.headline)
-                        
                         Text("6:00 AM - 7:00 PM")
                             .font(.body)
-                        
                         Text("*Virginia polls are open from 6am to 7pm on Election Day.")
                             .font(.caption)
                             .foregroundColor(.gray)
                             .padding(.top, 4)
                     }
                     
-                    // Accessibility info
                     VStack(alignment: .leading) {
                         Text("Accessibility")
                             .font(.headline)
-                        
                         HStack {
                             Image(systemName: "figure.roll")
                             Text("Wheelchair accessible")
                         }
-                        
                         HStack {
                             Image(systemName: "car.fill")
                             Text("Parking available")
                         }
                     }
                     
-                    // "I Voted" Sticker Preview
                     VStack(alignment: .center) {
                         Text("Check in here to earn")
                             .font(.headline)
-                        
                         Image(systemName: "checkmark.seal.fill")
                             .font(.system(size: 60))
                             .foregroundColor(.blue)
                             .padding()
-                        
                         Text("Digital \"I Voted\" sticker")
                             .fontWeight(.medium)
                     }
@@ -577,7 +456,6 @@ struct PollingPlaceDetailView: View {
                     .background(Color.blue.opacity(0.1))
                     .cornerRadius(12)
                     
-                    // Action buttons
                     VStack(spacing: 12) {
                         Button(action: {
                             let mapItem = MKMapItem(placemark: MKPlacemark(coordinate: place.coordinate))
@@ -596,7 +474,7 @@ struct PollingPlaceDetailView: View {
                         }
                         
                         Button(action: {
-                            // Add to calendar
+                            addToCalendar()
                         }) {
                             HStack {
                                 Image(systemName: "calendar.badge.plus")
@@ -619,11 +497,60 @@ struct PollingPlaceDetailView: View {
                 Image(systemName: "xmark.circle.fill")
                     .foregroundColor(.gray)
             })
+            .alert(isPresented: $showCalendarAlert) {
+                Alert(title: Text("Calendar"), message: Text(calendarAlertMessage), dismissButton: .default(Text("OK")))
+            }
+        }
+    }
+    
+    func addToCalendar() {
+        eventStore.requestAccess(to: .event) { granted, error in
+            DispatchQueue.main.async {
+                if let error = error {
+                    self.calendarAlertMessage = "Failed to access calendar:եՈ \(error.localizedDescription)"
+                    self.showCalendarAlert = true
+                    return
+                }
+                
+                guard granted else {
+                    self.calendarAlertMessage = "Please allow calendar access in Settings to add this event"
+                    self.showCalendarAlert = true
+                    return
+                }
+                
+                let event = EKEvent(eventStore: self.eventStore)
+                event.title = "Vote at \(place.title)"
+                event.location = place.address
+                
+                var components = DateComponents()
+                components.year = 2025
+                components.month = 11
+                components.day = 4
+                components.hour = 6
+                components.minute = 0
+                
+                let calendar = Calendar.current
+                if let startDate = calendar.date(from: components),
+                   let endDate = calendar.date(byAdding: .hour, value: 13, to: startDate) {
+                    event.startDate = startDate
+                    event.endDate = endDate
+                }
+                
+                event.calendar = self.eventStore.defaultCalendarForNewEvents
+                
+                do {
+                    try self.eventStore.save(event, span: .thisEvent)
+                    self.calendarAlertMessage = "Voting event added to your calendar!"
+                    self.showCalendarAlert = true
+                } catch {
+                    self.calendarAlertMessage = "Failed to save event: \(error.localizedDescription)"
+                    self.showCalendarAlert = true
+                }
+            }
         }
     }
 }
 
-// Extension for rounded corners
 extension View {
     func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
         clipShape(RoundedCorner(radius: radius, corners: corners))
