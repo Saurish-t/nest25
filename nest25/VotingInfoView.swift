@@ -10,7 +10,6 @@ struct VotingInfoView: View {
         NavigationView {
             ScrollView {
                 VStack(spacing: 20) {
-                    // Voting Information Section
                     VStack(alignment: .leading, spacing: 15) {
                         Text("Voting Information")
                             .font(.title2)
@@ -35,7 +34,6 @@ struct VotingInfoView: View {
                     Divider()
                         .padding(.horizontal)
 
-                    // Settings Section
                     VStack(alignment: .leading, spacing: 15) {
                         Text("Settings")
                             .font(.title2)
@@ -271,29 +269,24 @@ struct MoreInfoView: View {
                 Text(title)
                     .font(.title)
                     .fontWeight(.bold)
-                // For each section, show the heading and body content
                 ForEach(contentSections) { section in
                     VStack(alignment: .leading, spacing: 10) {
-                        // Section Heading with SF icon on the right
                         HStack(spacing: 10) {
                             Text(section.heading)
                                 .font(.headline)
                                 .frame(maxWidth: .infinity, alignment: .leading)
 
-                            // SF icon on the right side of the title
                             Image(systemName: section.iconName ?? "info.circle.fill")
                                 .foregroundColor(Color("PrimaryBlue"))
                                 .imageScale(.large)
                         }
 
-                        // Body paragraphs
                         ForEach(section.body, id: \.self) { paragraph in
                             Text(paragraph)
                                 .font(.body)
                                 .foregroundColor(.primary)
                         }
 
-                        // If a URL exists, show a "Learn more" link
                         if let url = section.link {
                             Link("Learn more", destination: url)
                                 .font(.subheadline)

@@ -3,32 +3,30 @@ import SwiftUI
 struct VoiceMattersView: View {
     @State private var showingPieChart = false
     
-    // Updated demographic data based on 2020 U.S. Census Bureau and Pew Research
     let demographicsData = [
         ("Age 18-29", 50.0, "Young voters have increased turnout in recent years."),
         ("Women", 68.0, "Women consistently vote at higher rates than men."),
         ("Hispanic Voters", 54.0, "Hispanic turnout reached a record high in 2020.")
     ]
     
-    // Personal stories with fictional article links
     let personalStories = [
         (
             title: "The Childcare Barrier to Voting",
-            imageName: "single-mom-story", // You may want to add a relevant image asset
+            imageName: "single-mom-story",
             story: "In 2024, nonvoters like single moms were identified as a critical group that often misses elections due to lack of childcare. Advocacy groups have started targeting these caregivers, knowing their votes could influence local policies such as education and family support.",
             impact: "Voting could help reshape support systems for working parents.",
             articleURL: "https://19thnews.org/2024/10/caregivers-single-moms-non-voters-2024/?utm_source=chatgpt.com"
         ),
         (
             title: "The Vote He Didn't Cast",
-            imageName: "damion-green-story", // Add a matching asset if possible
+            imageName: "damion-green-story",
             story: "In 2023, Damion Green lost his city council race in Washington by a single vote—his own. He skipped voting because he thought it would be 'narcissistic' to vote for himself. His opponent did vote and won. The loss drew national attention, highlighting how one vote really can decide an election.",
             impact: "A single vote could have changed his entire career.",
             articleURL: "https://www.businessinsider.com/political-candidate-didnt-vote-lost-election-one-ballot-thurston-washington-2023-12?utm_source=chatgpt.com"
         ),
         (
             title: "Immigrants Facing Language Barriers",
-            imageName: "imigrant-voter-story", // Swap with a real or placeholder image asset
+            imageName: "imigrant-voter-story",
             story: "In 2024, language barriers continued to prevent many immigrant voters from casting ballots. Without sufficient translation support or multilingual resources at polling places, these eligible citizens remain underrepresented in elections that directly affect their lives.",
             impact: "Language access could unlock political power for entire communities.",
             articleURL: "https://calmatters.org/california-divide/2024/03/immigrant-voter-rights/?utm_source=chatgpt.com"
@@ -39,14 +37,12 @@ struct VoiceMattersView: View {
         NavigationView {
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
-                    // Header
                     Text("My Voice Matters")
                         .font(.largeTitle)
                         .fontWeight(.bold)
                         .padding(.horizontal)
                         .padding(.top)
                     
-                    // Demographics Section
                     VStack(alignment: .leading, spacing: 10) {
                         HStack {
                             Text("Demographics of Voting")
@@ -90,7 +86,6 @@ struct VoiceMattersView: View {
                         DemographicsPieChartView(demographicsData: demographicsData)
                     }
                     
-                    // Personal Stories Section
                     VStack(alignment: .leading, spacing: 10) {
                         Text("Personal Stories of Impact")
                             .font(.title2)
@@ -126,7 +121,6 @@ struct VoiceMattersView: View {
                                     .foregroundColor(.blue)
                                     .padding(.horizontal)
                                 
-                                // Link only on this part
                                 Link("Read Full Story →", destination: URL(string: story.articleURL)!)
                                     .font(.caption)
                                     .foregroundColor(.blue)
@@ -140,7 +134,6 @@ struct VoiceMattersView: View {
                         }
                     }
                     
-                    // Learn More Section
                     VStack(alignment: .leading, spacing: 10) {
                         Text("Learn More")
                             .font(.title2)
@@ -204,11 +197,9 @@ struct VoiceMattersView: View {
     }
 }
 
-// Pie Chart View for Demographics
 struct DemographicsPieChartView: View {
     let demographicsData: [(String, Double, String)]
     
-    // Precompute start and end angles for each slice
     private var sliceAngles: [(startAngle: Double, endAngle: Double)] {
         let total: Double = 100
         var startAngle: Double = -90
@@ -232,7 +223,6 @@ struct DemographicsPieChartView: View {
                 .fontWeight(.bold)
                 .padding(.top)
             
-            // Pie Chart
             ZStack {
                 ForEach(demographicsData.indices, id: \.self) { index in
                     PieChartSlice(
@@ -244,7 +234,6 @@ struct DemographicsPieChartView: View {
             }
             .frame(width: 200, height: 200)
             
-            // Key/Legend
             VStack(spacing: 10) {
                 ForEach(demographicsData.indices, id: \.self) { index in
                     HStack {
@@ -265,7 +254,6 @@ struct DemographicsPieChartView: View {
     }
 }
 
-// Pie Chart Slice Shape
 struct PieChartSlice: View {
     let startAngle: Angle
     let endAngle: Angle
