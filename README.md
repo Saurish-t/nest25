@@ -1,5 +1,6 @@
-#  ElectConnect
+#  ElectConnect | HackTheNest Winner
 
+Unfortunately keeping the backend code private for future purposes, but hopefully it should be available at https://github.com/JacobPercy/nest25backend soon
 ElectConnect is a civic engagement mobile app designed to increase voter participation — especially among underrepresented communities, by simplifying access to reliable, personalized election information.
 
 ##  Problem
